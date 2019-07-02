@@ -1,0 +1,24 @@
+{
+  "name": "reading-list",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel src/index.html"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.3"
+  },
+  "dependencies": {
+    "js-pattern-matching": "^0.2.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-router": "^5.0.1",
+    "react-router-dom": "^5.0.1",
+    "styled-components": "^4.3.2",
+    "uuid": "^3.3.2"
+  }
+}
