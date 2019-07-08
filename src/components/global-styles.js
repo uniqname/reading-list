@@ -6,7 +6,8 @@ export default createGlobalStyle`
     box-sizing: border-box;
     font-family: Helvetica, sans-serif;
     font-size: 20px;
-    color: ${select("theme.bodyText")}
+    color: ${select("theme.bodyText")};
+    background: ${select("theme.bodyBackground")};
   }
   
   *, *::before, *::after {

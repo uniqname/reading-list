@@ -32780,7 +32780,72 @@ if ("local" !== 'production' && "local" !== 'test' && typeof window !== 'undefin
 
 var _default = styled;
 exports.default = _default;
-},{"stylis/stylis.min":"../node_modules/stylis/stylis.min.js","stylis-rule-sheet":"../node_modules/stylis-rule-sheet/index.js","react":"../node_modules/react/index.js","@emotion/unitless":"../node_modules/@emotion/unitless/dist/unitless.browser.esm.js","react-is":"../node_modules/react-is/index.js","memoize-one":"../node_modules/memoize-one/dist/memoize-one.esm.js","prop-types":"../node_modules/prop-types/index.js","@emotion/is-prop-valid":"../node_modules/@emotion/is-prop-valid/dist/is-prop-valid.browser.esm.js","merge-anything":"../node_modules/merge-anything/dist/index.esm.js","process":"../node_modules/process/browser.js"}],"../node_modules/uuid/lib/rng-browser.js":[function(require,module,exports) {
+},{"stylis/stylis.min":"../node_modules/stylis/stylis.min.js","stylis-rule-sheet":"../node_modules/stylis-rule-sheet/index.js","react":"../node_modules/react/index.js","@emotion/unitless":"../node_modules/@emotion/unitless/dist/unitless.browser.esm.js","react-is":"../node_modules/react-is/index.js","memoize-one":"../node_modules/memoize-one/dist/memoize-one.esm.js","prop-types":"../node_modules/prop-types/index.js","@emotion/is-prop-valid":"../node_modules/@emotion/is-prop-valid/dist/is-prop-valid.browser.esm.js","merge-anything":"../node_modules/merge-anything/dist/index.esm.js","process":"../node_modules/process/browser.js"}],"utils/select.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+/*
+ * Given a dot (.) delimited string as a deep path into an object, an optional
+ * fallback value, and the target object, extract the value from the object at
+ * that path or return the fallback value if nothing exists at the provide path.
+ *
+ * EXAMPLE: select('a.0.b', 'fallback value')({a: [{b: 'Hi'}]}) // 'Hi'
+ * EXAMPLE: select('some.deep.0.path', 'fallback value')({}) // 'fallback value'
+ */
+// select :: (String -> Any) -> Any -> Any
+var select = function select() {
+  var path = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+  var fallbackValue = arguments.length > 1 ? arguments[1] : undefined;
+  return function (targetObject) {
+    // store result in variable in order to explicitly check for undefined later
+    var result = path // produce path segments array. dot (.) is the only valid delimeter
+    .split('.') // walk the target object at each path segment sequentially.
+    .reduce(function (targetObjectContext, pathSegment) {
+      return (// Use the object wrapper to  do the lookup in order to prevent errors when attempting to access properties on primities that don't allow property access like `null` or Numbers.
+        Object(targetObjectContext)[pathSegment]
+      );
+    }, targetObject); // if the result of the lookups is undefined, return the fallback value, otherwise return the found value.
+
+    return result !== undefined ? result : fallbackValue;
+  };
+};
+
+var _default = select;
+exports.default = _default;
+},{}],"components/global-styles.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _styledComponents = require("styled-components");
+
+var _select = _interopRequireDefault(require("../utils/select.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _templateObject() {
+  var data = _taggedTemplateLiteral(["\n  html, body {\n    box-sizing: border-box;\n    font-family: Helvetica, sans-serif;\n    font-size: 20px;\n    color: ", ";\n    background: ", ";\n  }\n  \n  *, *::before, *::after {\n    box-sizing: inherit;\n  }\n  \n  \n"]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+var _default = (0, _styledComponents.createGlobalStyle)(_templateObject(), (0, _select.default)("theme.bodyText"), (0, _select.default)("theme.bodyBackground"));
+
+exports.default = _default;
+},{"styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","../utils/select.js":"utils/select.js"}],"../node_modules/uuid/lib/rng-browser.js":[function(require,module,exports) {
 // Unique ID creation requires a high quality random # generator.  In the
 // browser this is a little complicated due to unknown quality of Math.random()
 // and inconsistent support for the `crypto` API.  We do the best we can via
@@ -33009,7 +33074,188 @@ var BookListContextProvider = function BookListContextProvider(_ref2) {
 };
 
 exports.BookListContextProvider = BookListContextProvider;
-},{"react":"../node_modules/react/index.js","uuid/v4":"../node_modules/uuid/v4.js"}],"app.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","uuid/v4":"../node_modules/uuid/v4.js"}],"components/copy.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _styledComponents = _interopRequireDefault(require("styled-components"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _templateObject() {
+  var data = _taggedTemplateLiteral(["\n  opacity: ", ";\n  font-size: ", "em;\n"]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+var _default = _styledComponents.default.p(_templateObject(), function (_ref) {
+  var variant = _ref.variant;
+  return variant === "deemphasize" ? 0.75 : 1;
+}, function (_ref2) {
+  var size = _ref2.size;
+  return size === "small" ? 0.8 : 1;
+});
+
+exports.default = _default;
+},{"styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js"}],"components/header.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _styledComponents = _interopRequireDefault(require("styled-components"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _templateObject() {
+  var data = _taggedTemplateLiteral([""]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+var _default = _styledComponents.default.h1(_templateObject());
+
+exports.default = _default;
+},{"styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js"}],"components/link.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _styledComponents = _interopRequireDefault(require("styled-components"));
+
+var _reactRouterDom = require("react-router-dom");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _templateObject() {
+  var data = _taggedTemplateLiteral([""]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+var _default = _styledComponents.default.a.attrs(function (_ref) {
+  var target = _ref.target;
+  return _objectSpread({}, !target && {
+    as: _reactRouterDom.Link
+  });
+})(_templateObject());
+
+exports.default = _default;
+},{"styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"components/button.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _styledComponents = _interopRequireDefault(require("styled-components"));
+
+var _select = _interopRequireDefault(require("../utils/select.js"));
+
+var _link = _interopRequireDefault(require("./link.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _templateObject() {
+  var data = _taggedTemplateLiteral(["\n  background: ", ";\n  border-radius: 4px;\n  border: none;\n  color: ", ";\n  cursor: pointer;\n  font-size: 1em;\n  padding: 0.25em;\n  text-decoration: none;\n\n  &:hover {\n    background: ", "99;\n  }\n"]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+var _default = _styledComponents.default.button.attrs(function (_ref) {
+  var href = _ref.href;
+  return _objectSpread({}, href && {
+    as: _link.default
+  });
+})(_templateObject(), (0, _select.default)("theme.buttonBg"), (0, _select.default)("theme.buttonColor"), (0, _select.default)("theme.buttonBg"));
+
+exports.default = _default;
+},{"styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","../utils/select.js":"utils/select.js","./link.js":"components/link.js"}],"components/book.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Footer = exports.default = void 0;
+
+var _styledComponents = _interopRequireDefault(require("styled-components"));
+
+var _select = _interopRequireDefault(require("../utils/select.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _templateObject2() {
+  var data = _taggedTemplateLiteral([""]);
+
+  _templateObject2 = function _templateObject2() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject() {
+  var data = _taggedTemplateLiteral(["\n  border-bottom: 1px solid ", ";\n"]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+var _default = _styledComponents.default.article(_templateObject(), (0, _select.default)("theme.border"));
+
+exports.default = _default;
+
+var Footer = _styledComponents.default.footer(_templateObject2());
+
+exports.Footer = Footer;
+},{"styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","../utils/select.js":"utils/select.js"}],"app.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -33022,6 +33268,16 @@ var _react = _interopRequireWildcard(require("react"));
 var _v = _interopRequireDefault(require("uuid/v4"));
 
 var _useBookList3 = _interopRequireDefault(require("./hooks/use-book-list.js"));
+
+var _copy = _interopRequireDefault(require("./components/copy.js"));
+
+var _header = _interopRequireDefault(require("./components/header.js"));
+
+var _button = _interopRequireDefault(require("./components/button.js"));
+
+var _book = _interopRequireWildcard(require("./components/book.js"));
+
+var _link = _interopRequireDefault(require("./components/link.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -33041,22 +33297,44 @@ var _default = function _default() {
   var _useBookList = (0, _useBookList3.default)(),
       _useBookList2 = _slicedToArray(_useBookList, 2),
       bookList = _useBookList2[0],
-      actions = _useBookList2[1];
+      _useBookList2$ = _useBookList2[1],
+      add = _useBookList2$.add,
+      remove = _useBookList2$.remove,
+      update = _useBookList2$.update;
 
   var _useState = (0, _react.useState)(""),
       _useState2 = _slicedToArray(_useState, 2),
       title = _useState2[0],
       setTitle = _useState2[1];
 
-  return _react.default.createElement(_react.Fragment, null, _react.default.createElement("h1", null, "Reading List"), Object.values(bookList).map(function (_ref) {
+  return _react.default.createElement(_react.Fragment, null, _react.default.createElement(_header.default, null, "Reading List"), Object.values(bookList).map(function (_ref) {
     var title = _ref.title,
-        id = _ref.id;
-    return _react.default.createElement("p", {
+        id = _ref.id,
+        read = _ref.read;
+    return _react.default.createElement(_book.default, {
       key: JSON.stringify({
         title: title,
         id: id
       })
-    }, title, " [", id, "]");
+    }, _react.default.createElement(_copy.default, null, title), _react.default.createElement(_copy.default, {
+      size: "small",
+      variant: "deemphasize"
+    }, id), _react.default.createElement(_book.Footer, null, _react.default.createElement(_button.default, {
+      target: "_blank",
+      href: "https://www.amazon.com/s?k=".concat(title.replace(/\s/g, "+"), "&i=stripbooks")
+    }, "Get it"), _react.default.createElement(_button.default, {
+      onClick: function onClick() {
+        return update({
+          title: title,
+          id: id,
+          read: !read
+        });
+      }
+    }, "Read it"), _react.default.createElement(_button.default, {
+      onClick: function onClick() {
+        return remove(id);
+      }
+    }, "Delete it")));
   }), _react.default.createElement("label", null, _react.default.createElement("span", null, "Book title"), _react.default.createElement("input", {
     name: "title",
     value: title,
@@ -33064,9 +33342,9 @@ var _default = function _default() {
       var value = _ref2.target.value;
       return setTitle(value);
     }
-  })), _react.default.createElement("button", {
+  })), _react.default.createElement(_button.default, {
     onClick: function onClick() {
-      actions.add({
+      add({
         title: title
       });
       setTitle("");
@@ -33075,15 +33353,29 @@ var _default = function _default() {
 };
 
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","uuid/v4":"../node_modules/uuid/v4.js","./hooks/use-book-list.js":"hooks/use-book-list.js"}],"components/theme.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","uuid/v4":"../node_modules/uuid/v4.js","./hooks/use-book-list.js":"hooks/use-book-list.js","./components/copy.js":"components/copy.js","./components/header.js":"components/header.js","./components/button.js":"components/button.js","./components/book.js":"components/book.js","./components/link.js":"components/link.js"}],"components/theme.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.bodyText = void 0;
-var bodyText = "hsla(0, 10%, 0%, 0)";
+exports.lightGray = exports.linkColor = exports.buttonColor = exports.buttonBg = exports.buttonBorder = exports.border = exports.bodyText = exports.bodyBackground = void 0;
+var bodyBackground = "#340068";
+exports.bodyBackground = bodyBackground;
+var bodyText = "#FFFCF9";
 exports.bodyText = bodyText;
+var border = "#6D435A";
+exports.border = border;
+var buttonBorder = "#6D435A";
+exports.buttonBorder = buttonBorder;
+var buttonBg = "#FF6978";
+exports.buttonBg = buttonBg;
+var buttonColor = bodyText;
+exports.buttonColor = buttonColor;
+var linkColor = buttonBg;
+exports.linkColor = linkColor;
+var lightGray = "hsla(0, 0%, 98%, 1)";
+exports.lightGray = lightGray;
 },{}],"index.js":[function(require,module,exports) {
 "use strict";
 
@@ -33094,6 +33386,8 @@ var _reactDom = require("react-dom");
 var _reactRouterDom = require("react-router-dom");
 
 var _styledComponents = require("styled-components");
+
+var _globalStyles = _interopRequireDefault(require("./components/global-styles.js"));
 
 var _app = _interopRequireDefault(require("./app.js"));
 
@@ -33106,9 +33400,9 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 (0, _reactDom.render)(_react.default.createElement(_styledComponents.ThemeProvider, {
-  theme: {}
-}, _react.default.createElement(_useBookList.BookListContextProvider, null, _react.default.createElement(_reactRouterDom.BrowserRouter, null, _react.default.createElement(_app.default, null)))), document.querySelector("#root"));
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","./app.js":"app.js","./hooks/use-book-list.js":"hooks/use-book-list.js","./components/theme.js":"components/theme.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+  theme: theme
+}, _react.default.createElement(_useBookList.BookListContextProvider, null, _react.default.createElement(_reactRouterDom.BrowserRouter, null, _react.default.createElement(_globalStyles.default, null), _react.default.createElement(_app.default, null)))), document.querySelector("#root"));
+},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","styled-components":"../node_modules/styled-components/dist/styled-components.browser.esm.js","./components/global-styles.js":"components/global-styles.js","./app.js":"app.js","./hooks/use-book-list.js":"hooks/use-book-list.js","./components/theme.js":"components/theme.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -33136,7 +33430,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54470" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60676" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
